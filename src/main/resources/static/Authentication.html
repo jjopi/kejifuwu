@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+</head>
+<body>
+<div id="app">
+
+    <div style="width: auto;">
+        <div style="height: 60px;width: auto;background-color: ghostwhite;">
+            <div style="float: left;height: auto;width: 17%;text-align: center;line-height: 60px;color: #6f6f6f;font-size: 30px;font-family: 微软雅黑">
+                研发设计服务
+            </div>
+
+            <div style="float: right;height: 100%;text-align: center;line-height: 60px;color: #6f6f6f;font-size: 14px;font-family: 微软雅黑">
+                <div>
+                    <div style="float: right;cursor: pointer" @click="logout">
+                        退出登录
+                    </div>
+                    <div style="float: right;margin-right: 40px;">
+                        你好,{{username}}
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div style="width: auto;height: 800px;padding-top: 20px;padding-left: 30px;padding-right: 30px">
+            <div style="width: auto;height: 40px;font-family:微软雅黑; font-size: 25px;line-height: 40px;padding-left: 10px">
+                个人中心
+            </div>
+            <div style="width: 100%;height: 1px;background: #00a7d9;overflow: hidden;"></div>
+
+            <div style="width: auto;">
+
+                <div style="margin: auto;width: 75%;height: 700px;box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);">
+                    <div v-if="status=='0'" style="width: auto;height: 94%;margin: 20px;">
+                        <div style="height: 40px;width: auto">
+                            <div style="float: left;width: 15%;text-align: left;line-height: 40px">证件类型:</div>
+                            <div style="float: left;width: 75%;text-align: left;line-height: 40px;margin-left: 30px">身份证</div>
+                        </div>
+                        <div style="height: 40px;width: auto;margin-top: 20px">
+                            <div style="float: left;width: 15%;text-align: left;line-height: 40px">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</div>
+                            <div style="float: left;width: 75%;text-align: left;line-height: 40px;margin-left: 30px">
+                                <input type="text" placeholder="请输入姓名" style="height: 34px;width: 300px" v-model="name">
+                            </div>
+                        </div>
+                        <div style="height: 40px;width: auto;margin-top: 20px">
+                            <div style="float: left;width: 15%;text-align: left;line-height: 40px">身份证号:</div>
+                            <div style="float: left;width: 75%;text-align: left;line-height: 40px;margin-left: 30px">
+                                <input type="text" placeholder="请输入身份证号" style="height: 34px;width: 300px" v-model="identity_id">
+                            </div>
+                        </div>
+
+                        <div style="height: 40px;width: auto;margin-top: 20px">
+                            <div style="float: left;width: 80%;text-align: left;line-height: 40px">上传身份证图片(正反面+手持):</div>
+                        </div>
+
+                        <div style="height: 40px;width: auto;margin-top: 20px">
+                            <div style="float: left;width: 30%;text-align: left;line-height: 40px">
+                                <input type="file" accept="image/*" @change="handleFileChange1" ref="inputer1"/>
+                            </div>
+                            <div style="float: left;width: 30%;text-align: left;line-height: 40px">
+                                <input type="file" accept="image/*" @change="handleFileChange2" ref="inputer2"/>
+                            </div>
+                            <div style="float: left;width: 30%;text-align: left;line-height: 40px">
+                                <input type="file" accept="image/*" @change="handleFileChange3" ref="inputer3"/>
+                            </div>
+                        </div>
+
+                        <div style="height: 40px;width: auto;margin-top: 20px">
+                            <div style="float: left;width: 7%;text-align: center;line-height: 40px;background-color: #0959ae;color: white;cursor: pointer" @click="submit">提交</div>
+                        </div>
+
+                    </div>
+
+                    <div v-else style="width: auto;height: 94%;margin: 20px;">
+                        <div style="height: 40px;width: auto;margin-top: 20px">
+                            <div style="float: left;width: 20%;text-align: left;line-height: 40px">企业名称:</div>
+                            <div style="float: left;width: 75%;text-align: left;line-height: 40px;margin-left: 30px">
+                                <input type="text" placeholder="请输入企业名称" style="height: 34px;width: 300px" v-model="enter_name">
+                            </div>
+                        </div>
+                        <div style="height: 40px;width: auto;margin-top: 20px">
+                            <div style="float: left;width: 20%;text-align: left;line-height: 40px">统一社会信用代码:</div>
+                            <div style="float: left;width: 75%;text-align: left;line-height: 40px;margin-left: 30px">
+                                <input type="text" placeholder="请输入统一社会信用代码" style="height: 34px;width: 300px" v-model="enter_number">
+                            </div>
+                        </div>
+                        <div style="height: 40px;width: auto;margin-top: 20px">
+                            <div style="float: left;width: 20%;text-align: left;line-height: 40px">法定代表人:</div>
+                            <div style="float: left;width: 75%;text-align: left;line-height: 40px;margin-left: 30px">
+                                <input type="text" placeholder="请输入法定代表人" style="height: 34px;width: 300px" v-model="enter_represent">
+                            </div>
+                        </div>
+
+                        <div style="height: 40px;width: auto;margin-top: 20px">
+                            <div style="float: left;width: 80%;text-align: left;line-height: 40px">上传企业营业执照(加公章):</div>
+                        </div>
+
+                        <div style="height: 40px;width: auto;margin-top: 20px">
+                            <div style="float: left;width: 30%;text-align: left;line-height: 40px">
+                                <input type="file" accept="image/*" @change="handleFileChange4" ref="inputer4"/>
+                            </div>
+                        </div>
+
+                        <div style="height: 40px;width: auto;margin-top: 20px">
+                            <div style="float: left;width: 10%;text-align: center;line-height: 40px;background-color: #0959ae;color: white;cursor: pointer" @click="submit">提交审核</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            status: '',
+            file: new FormData(),
+            name: '',
+            identity_id: '',
+            username: '',
+            enter_name: '',
+            enter_number: '',
+            enter_represent: '',
+            enter_file: new FormData(),
+        },
+        created: function () {
+            let token_value=localStorage.getItem("token")
+            let status_value = localStorage.getItem("status")
+            if(token_value==null){
+                window.location.href='login.html'
+            }
+            this.username=token_value
+            if(status_value=='0'||status_value==null){
+                this.status='0'
+            }else{
+                this.status='1'
+            }
+        },
+        methods: {
+            logout: function () {
+                localStorage.removeItem('token')
+                localStorage.removeItem('status')
+                window.location.href = 'index.html'
+            },
+            goverify:function (){
+                this.isverify='2'
+            },
+            save:function (){
+                this.isverify='1'
+            },
+            submit:function (){
+                if(this.status=='0'){
+                    if(this.name==''||this.identity_id==''||!this.file.has("file1")||!this.file.has("file2")||!this.file.has("file3")){
+                        alert("请输入所有内容")
+                    }else{
+                        this.file.append('name',this.name)
+                        this.file.append('identity_id',this.identity_id)
+                        this.file.append('username',this.username)
+                        fetch('/upload/individual',{
+                            method: 'POST',
+                            body:this.file
+                        }).then(res=>res.json()).then(json=>{
+                            window.location.href='indi/member_old.html'
+                        })
+
+                    }
+                }else{
+                    this.enter_file.append('username',this.username)
+                    this.enter_file.append('enter_name',this.enter_name)
+                    this.enter_file.append('enter_number',this.enter_number)
+                    this.enter_file.append('enter_represent',this.enter_represent)
+                    fetch('/upload/enterprise',{
+                        method: 'POST',
+                        body:this.enter_file
+                    }).then(res=>res.json()).then(json=>{
+                        window.location.href='indi/member_old.html'
+                    })
+                }
+            },
+            handleFileChange1:function (e){
+                let inputDOM = this.$refs.inputer1;
+                console.log(inputDOM)
+                this.filedate = inputDOM.files[0];// 通过DOM取文件数据
+                if(this.file.has("file1")){
+                    this.file.delete("file1")
+                }
+                this.file.append("file1",this.filedate); //将file属性添加到formData里
+            },
+            handleFileChange2:function (e){
+                let inputDOM = this.$refs.inputer2;
+                console.log(inputDOM)
+                this.filedate = inputDOM.files[0];// 通过DOM取文件数据
+                if(this.file.has("file2")){
+                    this.file.delete("file2")
+                }
+                this.file.append("file2",this.filedate); //将file属性添加到formData里
+
+
+            },
+            handleFileChange3:function (e){
+                let inputDOM = this.$refs.inputer3;
+                console.log(inputDOM)
+                this.filedate = inputDOM.files[0];// 通过DOM取文件数据
+                if(this.file.has("file3")){
+                    this.file.delete("file3")
+                }
+                this.file.append("file3",this.filedate); //将file属性添加到formData里
+                console.log(this.file.get("file3"))
+
+            },
+
+            handleFileChange4:function (e){
+                let inputDOM = this.$refs.inputer4;
+                console.log(inputDOM)
+                this.filedate = inputDOM.files[0];// 通过DOM取文件数据
+                if(this.enter_file.has("enter_file")){
+                    this.enter_file.delete("enter_file")
+                }
+                this.enter_file.append("enter_file",this.filedate); //将file属性添加到formData里
+
+            }
+
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <style>
+        .el-input__inner{
+            font-size: inherit;
+            font-family: 微软雅黑;
+            color: #606266;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-cascader :options="options" @change="select_area">
+        <template slot-scope="{ node, data }">
+            <span>{{ data.label }}</span>
+            <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+        </template>
+    </el-cascader>
+
+
+    <el-dialog title="生物医药" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+            <el-form-item label="服务名称" :label-width="formLabelWidth">
+                <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="服务提供方" :label-width="formLabelWidth">
+                <el-select v-model="form.provider" placeholder="服务提供方">
+                    <el-option :label="provider" :value="provider"></el-option>
+                </el-select>
+            </el-form-item>
+
+
+            <el-form-item label="医药领域" :label-width="formLabelWidth">
+                <el-checkbox-group v-model="form.business">
+                    <el-checkbox label="单克隆抗体"></el-checkbox>
+                    <el-checkbox label="重组蛋白药物"></el-checkbox>
+                    <el-checkbox label="新型疫苗"></el-checkbox>
+                    <el-checkbox label="血液制品" ></el-checkbox>
+                    <el-checkbox label="诊断试剂" ></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+
+            <el-form-item label="药物发现" :label-width="formLabelWidth">
+                <el-checkbox-group v-model="form.discovery">
+                    <el-checkbox label="药物来源"></el-checkbox>
+                    <el-checkbox label="化合物合成"></el-checkbox>
+                    <el-checkbox label="化合物筛选"></el-checkbox>
+                    <el-checkbox label="生物咨询" ></el-checkbox>
+                    <el-checkbox label="药物改质" ></el-checkbox>
+                    <el-checkbox label="药物小试" ></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+
+            <el-form-item label="临床前研究" :label-width="formLabelWidth">
+                <el-checkbox-group v-model="form.preclinical">
+                    <el-checkbox label="药学研究"></el-checkbox>
+                    <el-checkbox label="药理毒理学研究"></el-checkbox>
+                    <el-checkbox label="药代动力学研究"></el-checkbox>
+                    <el-checkbox label="安全性评价" ></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="临床研究" :label-width="formLabelWidth">
+                <el-checkbox-group v-model="form.clinical">
+                    <el-checkbox label="临床试验Ⅰ、Ⅱ、Ⅲ、Ⅳ期"></el-checkbox>
+                    <el-checkbox label="医学统计"></el-checkbox>
+                    <el-checkbox label="数据管理"></el-checkbox>
+                    <el-checkbox label="数据分析" ></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+
+            <el-form-item label="审批上市" :label-width="formLabelWidth">
+                <el-checkbox-group v-model="form.examine">
+                    <el-checkbox label="注册申报"></el-checkbox>
+                    <el-checkbox label="上市后测试 "></el-checkbox>
+                    <el-checkbox label="市场推广"></el-checkbox>
+                    <el-checkbox label="持续研究" ></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+
+            <el-form-item label="认证" :label-width="formLabelWidth">
+                <el-checkbox-group v-model="form.authentication">
+                    <el-checkbox label="FDA"></el-checkbox>
+                    <el-checkbox label="NMPA "></el-checkbox>
+                    <el-checkbox label="EMA"></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+
+            <el-form-item label="服务描述" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+                        style="line-height: 30px"
+                        placeholder="请输入服务描述"
+                        v-model="form.des">
+                </el-input>
+            </el-form-item>
+
+            <el-form-item label="需求提供方式" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+
+                        placeholder="请输入对服务需求方的服务需求要求（内容和提供方式）"
+                        v-model="form.demand">
+                </el-input>
+            </el-form-item>
+
+            <el-form-item label="服务结果交付" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+                        placeholder="请输入服务完成后的交付物和交付方式"
+                        v-model="form.deliverable">
+                </el-input>
+            </el-form-item>
+
+
+            <el-form-item label="联系人" :label-width="formLabelWidth">
+                <el-input v-model="form.contact" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="联系方式" :label-width="formLabelWidth">
+                <el-input v-model="form.phone" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="研发周期" :label-width="formLabelWidth">
+                <el-input v-model="form.period" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="研发费用" :label-width="formLabelWidth">
+                <el-input v-model="form.fee" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="特色和优势" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+                        placeholder="请输入企业的特色和优势"
+                        v-model="form.characteristic">
+                </el-input>
+            </el-form-item>
+
+            <el-form-item label="企业研发成果" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+                        placeholder="请输入企业历史研发成果"
+                        v-model="form.achievement">
+                </el-input>
+            </el-form-item>
+            <el-form-item label="售后和保障" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+                        placeholder="请输入服务完成后的验收形式以及相应保障"
+                        v-model="form.guarantee">
+                </el-input>
+            </el-form-item>
+
+
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="service_submit">发 布</el-button>
+        </div>
+    </el-dialog>
+    <el-dialog title="电子光学仪器" :visible.sync="dialogFormVisible1">
+        <el-form :model="form1">
+            <el-form-item label="仪器名称" :label-width="formLabelWidth">
+                <el-input v-model="form1.name" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="仪器种类" :label-width="formLabelWidth">
+                <el-radio v-model="form1.kind" label="透射电镜">透射电镜</el-radio>
+                <el-radio v-model="form1.kind" label="扫描电镜">扫描电镜</el-radio>
+                <el-radio v-model="form1.kind" label="电子探针">电子探针</el-radio>
+                <el-radio v-model="form1.kind" label="电子能谱仪">电子能谱仪</el-radio>
+                <el-radio v-model="form1.kind" label="其他">其他</el-radio>
+            </el-form-item>
+
+
+
+            <el-form-item label="仪器购置时间" :label-width="formLabelWidth">
+                <el-input v-model="form1.buy_date" autocomplete="off" placeholder="如2021-05-01"></el-input>
+            </el-form-item>
+
+            <el-form-item label="服务提供方" :label-width="formLabelWidth">
+                <el-select v-model="form1.provider" placeholder="服务提供方">
+                    <el-option :label="provider" :value="provider"></el-option>
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="机构地址" :label-width="formLabelWidth">
+                <el-input v-model="form1.location" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="仪器适用的学科" :label-width="formLabelWidth">
+                <el-input v-model="form1.subjects" autocomplete="off" placeholder="如物理，化学"></el-input>
+            </el-form-item>
+
+            <el-form-item label="仪器制造商" :label-width="formLabelWidth">
+                <el-input v-model="form1.manufacturer" autocomplete="off" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="仪器型号" :label-width="formLabelWidth">
+                <el-input v-model="form1.number" autocomplete="off" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="代理商" :label-width="formLabelWidth">
+                <el-input v-model="form1.agency" autocomplete="off" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="预约模式" :label-width="formLabelWidth">
+                <el-checkbox-group v-model="form1.mode">
+                    <el-checkbox label="按时预约"></el-checkbox>
+                    <el-checkbox label="委托预约"></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+
+            <el-form-item label="仪器状态" :label-width="formLabelWidth">
+                <el-radio v-model="form1.status" label="启用">启用</el-radio>
+                <el-radio v-model="form1.status" label="维护中">维护中</el-radio>
+            </el-form-item>
+
+            <el-form-item label="工作模式" :label-width="formLabelWidth">
+                <el-radio v-model="form1.work_mode" label="周一到周五">周一到周五</el-radio>
+                <el-radio v-model="form1.work_mode" label="周一到周日">周一到周日</el-radio>
+            </el-form-item>
+
+            <el-form-item label="功能描述" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+                        style="line-height: 30px"
+                        placeholder="请输入仪器的主要功能"
+                        v-model="form1.des">
+                </el-input>
+            </el-form-item>
+            <el-form-item label="主要配件" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+                        style="line-height: 30px"
+                        placeholder="请输入仪器的主要配件"
+                        v-model="form1.parts">
+                </el-input>
+            </el-form-item>
+            <el-form-item label="参数介绍" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+                        style="line-height: 30px"
+                        placeholder="请输入仪器的参数介绍"
+                        v-model="form1.params">
+                </el-input>
+            </el-form-item>
+
+            <el-form-item label="联系人" :label-width="formLabelWidth">
+                <el-input v-model="form1.contact" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="联系方式" :label-width="formLabelWidth">
+                <el-input v-model="form1.phone" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="费用" :label-width="formLabelWidth">
+                <el-input v-model="form1.fee" autocomplete="off" placeholder="如100元/时"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+            <el-button type="primary" @click="service_submit_electron_optical">发 布</el-button>
+        </div>
+    </el-dialog>
+    <el-dialog title="电磁兼容检测" :visible.sync="dialogFormVisible2">
+        <el-form :model="form2">
+            <el-form-item label="服务名称" :label-width="formLabelWidth">
+                <el-input v-model="form2.name" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="EMI测试项目" :label-width="formLabelWidth">
+                <el-checkbox-group v-model="form2.emi">
+                    <el-checkbox label="传导发射(CE)"></el-checkbox>
+                    <el-checkbox label="辐射发射(RE)"></el-checkbox>
+                    <el-checkbox label="闪烁(Flicker)"></el-checkbox>
+                    <el-checkbox label="谐波电流(Harmonics)"></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+
+            <el-form-item label="EMS测试项目" :label-width="formLabelWidth">
+                <el-checkbox-group v-model="form2.ems">
+                    <el-checkbox label="辐射抗扰度(RS)"></el-checkbox>
+                    <el-checkbox label="传导抗扰度(CS)"></el-checkbox>
+                    <el-checkbox label="静电抗扰度(ESD)"></el-checkbox>
+                    <el-checkbox label="电快速瞬变脉冲群(EFT/B)"></el-checkbox>
+                    <el-checkbox label="电压跌落/短时中断(DIP/i)"></el-checkbox>
+                    <el-checkbox label="工频磁场抗扰度(PMS)"></el-checkbox>
+                    <el-checkbox label="浪涌抗扰度(surge)"></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+
+            <el-form-item label="测试领域" :label-width="formLabelWidth">
+                <el-checkbox-group v-model="form2.area">
+                    <el-checkbox label="家用电器"></el-checkbox>
+                    <el-checkbox label="电工电子设备"></el-checkbox>
+                    <el-checkbox label="信息技术设备"></el-checkbox>
+                    <el-checkbox label="工业设备"></el-checkbox>
+                    <el-checkbox label="测量控制设备"></el-checkbox>
+                    <el-checkbox label="轨道交通设备"></el-checkbox>
+                    <el-checkbox label="工科医疗设备"></el-checkbox>
+                    <el-checkbox label="计算机设备"></el-checkbox>
+                    <el-checkbox label="电力设备"></el-checkbox>
+                    <el-checkbox label="光伏设备"></el-checkbox>
+                    <el-checkbox label="风力设备"></el-checkbox>
+                    <el-checkbox label="汽车设备"></el-checkbox>
+                    <el-checkbox label="其他"></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+
+            <el-form-item label="CNAS认可" :label-width="formLabelWidth">
+                <el-radio v-model="form2.cnas" label="是">是</el-radio>
+                <el-radio v-model="form2.cnas" label="否">否</el-radio>
+            </el-form-item>
+
+            <el-form-item label="CMA计量认证" :label-width="formLabelWidth">
+                <el-radio v-model="form2.cma" label="是">是</el-radio>
+                <el-radio v-model="form2.cma" label="否">否</el-radio>
+            </el-form-item>
+
+            <el-form-item label="CAL审查认可" :label-width="formLabelWidth">
+                <el-radio v-model="form2.cal" label="是">是</el-radio>
+                <el-radio v-model="form2.cal" label="否">否</el-radio>
+            </el-form-item>
+
+            <el-form-item label="服务提供方" :label-width="formLabelWidth">
+                <el-select v-model="form2.provider" placeholder="服务提供方">
+                    <el-option :label="provider" :value="provider"></el-option>
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="检测机构地址" :label-width="formLabelWidth">
+                <el-input v-model="form2.location" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="检测周期" :label-width="formLabelWidth">
+                <el-input v-model="form2.period" autocomplete="off" placeholder="如一个月"></el-input>
+            </el-form-item>
+
+            <el-form-item label="检测服务" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+                        style="line-height: 30px"
+                        placeholder="请输入具体的检测服务，如静电放电抗扰度检测，辐射抗扰度检测等"
+                        v-model="form2.tests">
+                </el-input>
+            </el-form-item>
+
+            <el-form-item label="设备与场地描述" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+                        style="line-height: 30px"
+                        placeholder="请输入机构有哪些具体的检测设备和实验室场地"
+                        v-model="form2.instrument_lab">
+                </el-input>
+            </el-form-item>
+
+            <el-form-item label="测试形式" :label-width="formLabelWidth">
+                <el-checkbox-group v-model="form2.test_pattern">
+                    <el-checkbox label="完整测试(出具报告)"></el-checkbox>
+                    <el-checkbox label="摸底测试"></el-checkbox>
+                    <el-checkbox label="场地租用"></el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+
+            <el-form-item label="联系人" :label-width="formLabelWidth">
+                <el-input v-model="form2.contact" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="联系方式" :label-width="formLabelWidth">
+                <el-input v-model="form2.phone" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="费用" :label-width="formLabelWidth">
+                <el-input v-model="form2.fee" autocomplete="off" placeholder="如100元/时"></el-input>
+            </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+            <el-button type="primary" @click="service_submit_emc">发 布</el-button>
+        </div>
+    </el-dialog>
+
+    <el-dialog title="专利技术转让" :visible.sync="dialogFormVisible3">
+        <el-form :model="form3">
+            <el-form-item label="专利名称" :label-width="formLabelWidth">
+                <el-input v-model="form3.name" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="专利主分类" :label-width="formLabelWidth">
+                <el-input v-model="form3.major_sort" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="申请人" :label-width="formLabelWidth">
+                <el-input v-model="form3.applicant" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="发明人" :label-width="formLabelWidth">
+                <el-input v-model="form3.inventor" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="专利号" :label-width="formLabelWidth">
+                <el-input v-model="form3.patent_number" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="申请号" :label-width="formLabelWidth">
+                <el-input v-model="form3.appli_number" autocomplete="off" placeholder="如果已有专利号，该项可以不填"></el-input>
+            </el-form-item>
+
+            <el-form-item label="公开号" :label-width="formLabelWidth">
+                <el-input v-model="form3.public_number" autocomplete="off" placeholder="如果已有专利号，该项可以不填"></el-input>
+            </el-form-item>
+            <el-form-item label="代理机构" :label-width="formLabelWidth">
+                <el-input v-model="form3.agency" autocomplete="off" ></el-input>
+            </el-form-item>
+            <el-form-item label="代理人" :label-width="formLabelWidth">
+                <el-input v-model="form3.agent" autocomplete="off" ></el-input>
+            </el-form-item>
+
+            <el-form-item label="专利类型" :label-width="formLabelWidth">
+                <el-radio v-model="form3.type" label="发明专利">发明专利</el-radio>
+                <el-radio v-model="form3.type" label="实用新型">实用新型</el-radio>
+                <el-radio v-model="form3.type" label="外观专利">外观专利</el-radio>
+                <el-radio v-model="form3.type" label="新技术">新技术</el-radio>
+            </el-form-item>
+            <el-form-item label="技术领域" :label-width="formLabelWidth">
+                <el-radio v-model="form3.area" label="生活必需品">生活必需品</el-radio>
+                <el-radio v-model="form3.area" label="作业、运输">作业、运输</el-radio>
+                <el-radio v-model="form3.area" label="化工、冶金">化工、冶金</el-radio>
+                <el-radio v-model="form3.area" label="纺织、造纸">纺织、造纸</el-radio>
+                <el-radio v-model="form3.area" label="固定建筑">固定建筑</el-radio>
+                <el-radio v-model="form3.area" label="机械工程、照明、加热、爆破">机械工程、照明、加热、爆破</el-radio>
+                <el-radio v-model="form3.area" label="物理">物理</el-radio>
+                <el-radio v-model="form3.area" label="电学">电学</el-radio>
+                <el-radio v-model="form3.area" label="其他">其他</el-radio>
+            </el-form-item>
+
+            <el-form-item label="专利状态" :label-width="formLabelWidth">
+                <el-radio v-model="form3.status" label="授权未下证">授权未下证</el-radio>
+                <el-radio v-model="form3.status" label="已下证">已下证</el-radio>
+            </el-form-item>
+
+            <el-form-item label="专利来源" :label-width="formLabelWidth">
+                <el-radio v-model="form3.origin" label="高校">高校</el-radio>
+                <el-radio v-model="form3.origin" label="科研院所">科研院所</el-radio>
+                <el-radio v-model="form3.origin" label="企业">企业</el-radio>
+                <el-radio v-model="form3.origin" label="个人">个人</el-radio>
+                <el-radio v-model="form3.origin" label="其他">其他</el-radio>
+            </el-form-item>
+
+            <el-form-item label="转让方" :label-width="formLabelWidth">
+                <el-select v-model="form3.provider" placeholder="服务提供方">
+                    <el-option :label="provider" :value="provider"></el-option>
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="技术描述" :label-width="formLabelWidth">
+                <el-input
+                        type="textarea"
+                        :rows="6"
+                        style="line-height: 30px"
+                        placeholder="请输入技术的大概描述"
+                        v-model="form3.des">
+                </el-input>
+            </el-form-item>
+
+
+            <el-form-item label="服务有效期" :label-width="formLabelWidth">
+                <div class="block">
+                    <span class="demonstration">默认</span>
+                    <el-date-picker
+                            v-model="form3.validity"
+                            type="daterange"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+                    </el-date-picker>
+                </div>
+            </el-form-item>
+
+            <el-form-item label="专利附图" :label-width="formLabelWidth">
+                <el-upload
+                        class="upload-demo"
+                        action="/img/upload"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        :before-remove="beforeRemove"
+                        :on-success="handleSuccess"
+                        multiple
+                        :limit="1"
+                        :on-exceed="handleExceed">
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
+                </el-upload>
+            </el-form-item>
+
+            <el-form-item label="联系人" :label-width="formLabelWidth">
+                <el-input v-model="form3.contact" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="联系方式" :label-width="formLabelWidth">
+                <el-input v-model="form3.phone" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="转让费" :label-width="formLabelWidth">
+                <el-input v-model="form3.fee" autocomplete="off" placeholder="如100元/时"></el-input>
+            </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible3 = false">取 消</el-button>
+            <el-button type="primary" @click="service_submit_pattent_transfer">发 布</el-button>
+        </div>
+    </el-dialog>
+
+
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!',
+            dialogFormVisible: false,
+            dialogFormVisible1: false,
+            dialogFormVisible2: false,
+            dialogFormVisible3:false,
+            formLabelWidth: '120px',
+            provider: 'xx公司',
+            form: {
+                name: '',
+                contact: '',
+                phone: '',
+                provider: '',
+                fee: '',
+                des: '',
+                period: '',
+                guarantee: '',
+                characteristic: '',
+                deliverable: '',
+                demand: '',
+                discovery: [],
+                preclinical: [],
+                clinical: [],
+                examine: [],
+                authentication: [],
+                achievement: '',
+                business: [],
+            },
+            form1: {
+                mode: [],
+                name: '',
+                location: '',
+                subjects: '',
+                status: '',
+                buy_date: '',
+                manufacturer: '',
+                agency: '',
+                number: '',
+                work_mode: '',
+                kind: '',
+                parts: '',
+                params: '',
+                contact: '',
+                phone: '',
+                provider: '',
+                fee: '',
+            },
+            form2: {
+                emi:[],
+                ems:[],
+                name: '',
+                area: [],
+                cma: '',
+                cnas: '',
+                cal: '',
+                test_pattern: [],
+                instrument_lab:'',
+                location: '',
+                contact: '',
+                phone: '',
+                provider: '',
+                fee: '',
+                tests: '',
+                period: ''
+            },
+            form3: {
+                name: '',
+                type: '',
+                area: '',
+                validity: [],
+                origin: '',
+                patent_number:'',
+                appli_number: '',
+                public_number: '',
+                fileurl:'',
+                contact: '',
+                phone: '',
+                provider: '',
+                fee: '',
+                des: '',
+                inventor: '',
+                applicant: '',
+                major_sort: '',
+                agency: '',
+                agent: '',
+                status: ''
+            },
+            options: [{
+                value: '1',
+                label: '研发开发',
+                children: [{
+                    value: '1',
+                    label: '研发',
+                    children: [{
+                        value: '1',
+                        label: '生物医药'
+                    }, {
+                        value: '2',
+                        label: '智能装备'
+                    }, {
+                        value: '3',
+                        label: '新材料'
+                    }, {
+                        value: '4',
+                        label: '现代农业'
+                    }, {
+                        value: '5',
+                        label: '个性化'
+                    }]
+                }, {
+                    value: '2',
+                    label: '设计',
+                    children: [{
+                        value: '1',
+                        label: 'IC设计'
+                    }, {
+                        value: '2',
+                        label: '工业设计'
+                    }]
+                }]
+            }, {
+                value: '2',
+                label: '技术转移',
+                children: [
+                    {
+                        value: '1',
+                        label: '技术交易',
+                        children: [{
+                            value: '1',
+                            label: '专利技术转让'
+                        }, {
+                            value: '2',
+                            label: '许可证贸易'
+                        }, {
+                            value: '3',
+                            label: '工程承包'
+                        }, {
+                            value: '4',
+                            label: '合作开发经营'
+                        }, {
+                            value: '5',
+                            label: '直接投资'
+                        }, {
+                            value: '6',
+                            label: '技术交流交易会'
+                        }]
+                    },
+                    {
+                    value: '2',
+                    label: '技术咨询',
+                    children: [{
+                        value: '1',
+                        label: '技术评估与鉴证'
+                    }, {
+                        value: '2',
+                        label: '市场潜力调研'
+                    }, {
+                        value: '3',
+                        label: '投资机会与风险投资'
+                    }]
+                }, {
+                    value: '3',
+                    label: '技术转让',
+                    children: [{
+                        value: '1',
+                        label: '二次开发'
+                    }, {
+                        value: '2',
+                        label: '技术集成'
+                    }]
+                }, {
+                    value: '4',
+                    label: '技术代理',
+
+                }, {
+                    value: '5',
+                    label: '技术服务',
+                    children: [{
+                        value: '1',
+                        label: '技术诊断'
+                    }, {
+                        value: '2',
+                        label: '工程化运作'
+                    }]
+                }, {
+                    value: '6',
+                    label: '其他',
+                }]
+            }, {
+                value: '3',
+                label: '仪器开放',
+                children: [{
+                    value: '1',
+                    label: '分析仪器',
+                    children: [
+                        {
+                            value: '1',
+                            label: '电子光学仪器'
+                        }, {
+                            value: '2',
+                            label: '质谱仪器'
+                        }, {
+                            value: '3',
+                            label: 'X射线仪器'
+                        }, {
+                            value: '4',
+                            label: '光谱仪器'
+                        }, {
+                            value: '5',
+                            label: '色谱仪器'
+                        }, {
+                            value: '6',
+                            label: '破谱仪器'
+                        }, {
+                            value: '7',
+                            label: '电化学仪器'
+                        }, {
+                            value: '8',
+                            label: '显微镜及图像分析仪器'
+                        }, {
+                            value: '9',
+                            label: '热分析仪器'
+                        }, {
+                            value: '10',
+                            label: '生化分离分析仪器'
+                        }
+                    ]
+                }, {
+                    value: '2',
+                    label: '物理性能检测仪器',
+                    children: [
+                        {
+                            value: '1',
+                            label: '力学性能测量仪器'
+                        }, {
+                            value: '2',
+                            label: '大地测量仪器'
+                        }, {
+                            value: '3',
+                            label: '光电测量仪器'
+                        }, {
+                            value: '4',
+                            label: '声学振动仪器'
+                        }, {
+                            value: '5',
+                            label: '颗粒度测量仪器'
+                        }, {
+                            value: '6',
+                            label: '探伤仪器'
+                        }, {
+                            value: '7',
+                            label: '其他'
+                        }
+                    ]
+                }, {
+                    value: '3',
+                    label: '计量仪器',
+                    children: [
+                        {
+                            value: '1',
+                            label: '长度计量仪器'
+                        }, {
+                            value: '2',
+                            label: '热学计量仪器'
+                        }, {
+                            value: '3',
+                            label: '力学计量仪器'
+                        },{
+                            value: '4',
+                            label: '电子学计量仪器'
+                        }, {
+                            value: '5',
+                            label: '时间频率计量仪器'
+                        },{
+                            value: '6',
+                            label: '声学计量仪器'
+                        }, {
+                            value: '7',
+                            label: '光学计量仪器'
+                        },{
+                            value: '8',
+                            label: '其他'
+                        }
+                    ]
+                },{
+                    value: '4',
+                    label: '海洋仪器',
+                    children: [
+                        {
+                            value: '1',
+                            label: '海洋水文测量仪器'
+                        }, {
+                            value: '2',
+                            label: '多要素水文气象测量系统'
+                        }, {
+                            value: '3',
+                            label: '海洋生物调查仪器'
+                        }, {
+                            value: '4',
+                            label: '海水物理量测量仪器'
+                        }, {
+                            value: '5',
+                            label: '海洋遥感、遥测仪器'
+                        }, {
+                            value: '6',
+                            label: '海洋采样设备'
+                        }, {
+                            value: '7',
+                            label: '其他'
+                        }
+                    ]
+                },{
+                    value: '5',
+                    label: '地球探测仪器',
+                    children: [
+                        {
+                            value: '1',
+                            label: '电法仪器'
+                        }, {
+                            value: '2',
+                            label: '电磁法仪器'
+                        }, {
+                            value: '3',
+                            label: '磁法仪器'
+                        }, {
+                            value: '4',
+                            label: '重力仪器'
+                        }, {
+                            value: '5',
+                            label: '地震仪器'
+                        }, {
+                            value: '6',
+                            label: '地球物理测井仪器'
+                        }, {
+                            value: '7',
+                            label: '岩石矿物测试仪器'
+                        }, {
+                            value: '8',
+                            label: '其他'
+                        }
+                    ]
+                },{
+                    value: '6',
+                    label: '大气探测仪器',
+                    children: [
+                        {
+                            value: '1',
+                            label: '气象台站观测仪器'
+                        }, {
+                            value: '2',
+                            label: '高空气象探测仪器'
+                        }, {
+                            value: '3',
+                            label: '特殊大气探测仪器'
+                        }, {
+                            value: '4',
+                            label: '主动大气遥感仪器'
+                        }, {
+                            value: '5',
+                            label: '被动大气遥感仪器'
+                        }, {
+                            value: '6',
+                            label: '高层大气/电离层探测器'
+                        }, {
+                            value: '7',
+                            label: '对地观测仪器'
+                        }, {
+                            value: '8',
+                            label: '其他'
+                        }
+                    ]
+                },{
+                    value: '7',
+                    label: '电子测量仪器',
+                    children: [
+                        {
+                            value: '1',
+                            label: '通用电子测量仪器'
+                        }, {
+                            value: '2',
+                            label: '射频和微波测试仪器'
+                        }, {
+                            value: '3',
+                            label: '通讯测量仪器'
+                        }, {
+                            value: '4',
+                            label: '网络分析仪器'
+                        }, {
+                            value: '5',
+                            label: '大规模集成电路测试仪器'
+                        }, {
+                            value: '6',
+                            label: '其他'
+                        }
+                    ]
+                },{
+                    value: '8',
+                    label: '医学诊断仪器',
+                    children: [
+                        {
+                            value: '1',
+                            label: '临床检验分析仪器'
+                        }, {
+                            value: '2',
+                            label: '影像诊断仪器'
+                        }, {
+                            value: '3',
+                            label: '电子诊察仪器'
+                        }, {
+                            value: '4',
+                            label: '其他'
+                        }
+                    ]
+                },{
+                    value: '9',
+                    label: '特种检测仪器',
+                    children: [
+                        {
+                            value: '1',
+                            label: '射线检测仪器'
+                        }, {
+                            value: '2',
+                            label: '超声检测仪器'
+                        }, {
+                            value: '3',
+                            label: '电磁检测仪器'
+                        }, {
+                            value: '4',
+                            label: '声发射检测仪器'
+                        }, {
+                            value: '5',
+                            label: '光电检测仪器'
+                        }, {
+                            value: '6',
+                            label: '其他'
+                        }
+                    ]
+                },{
+                    value: '10',
+                    label: '天文仪器',
+                    children: [
+                        {
+                            value: '1',
+                            label: '天体测量仪器'
+                        }, {
+                            value: '2',
+                            label: '地面天文望远镜'
+                        }, {
+                            value: '3',
+                            label: '空间天文望远镜'
+                        }, {
+                            value: '4',
+                            label: '其他'
+                        }
+                    ]
+                },{
+                    value: '11',
+                    label: '核仪器',
+                    children: [
+                        {
+                            value: '1',
+                            label: '核辐射探测仪器'
+                        }, {
+                            value: '2',
+                            label: '活化分析仪器'
+                        }, {
+                            value: '3',
+                            label: '离子束分析仪器'
+                        }, {
+                            value: '4',
+                            label: '核效应分析仪器'
+                        }, {
+                            value: '5',
+                            label: '中子散射及衍射仪器'
+                        }, {
+                            value: '6',
+                            label: '其他'
+                        }
+                    ]
+                },{
+                    value: '12',
+                    label: '其他仪器',
+                }]
+            }, {
+                value: '4',
+                label: '检验检测',
+                children: [{
+                    value: '1',
+                    label: '电子检测',
+                    children: [
+                        {
+                            value: '1',
+                            label: '电磁兼容检测'
+                        }, {
+                            value: '2',
+                            label: '电气安全检测'
+                        }, {
+                            value: '3',
+                            label: '性能测试'
+                        }, {
+                            value: '4',
+                            label: '节能测试'
+                        }
+                    ]
+                }, {
+                    value: '2',
+                    label: '食品医药检测',
+                    children: [
+                        {
+                            value: '1',
+                            label: '食品检测'
+                        }, {
+                            value: '2',
+                            label: '药品保健品检测'
+                        }, {
+                            value: '3',
+                            label: '食品接触材料检测'
+                        }
+                    ]
+                }, {
+                    value: '3',
+                    label: '新材料检测',
+                    children: [
+                        {
+                            value: '1',
+                            label: '物理性能检测'
+                        }, {
+                            value: '2',
+                            label: '化学成分分析'
+                        }, {
+                            value: '3',
+                            label: '组织结构分析'
+                        }
+                    ]
+                },{
+                    value: '4',
+                    label: '环境检测/监测',
+                    children: [
+                        {
+                            value: '1',
+                            label: '空气检测'
+                        }, {
+                            value: '2',
+                            label: '水质检测'
+                        }, {
+                            value: '3',
+                            label: '噪声检测'
+                        }, {
+                            value: '4',
+                            label: '辐射监测'
+                        }, {
+                            value: '5',
+                            label: '土壤、地质和固体废弃物检测'
+                        }
+                    ]
+                },{
+                    value: '5',
+                    label: '先进制造检测',
+                    children: [
+                        {
+                            value: '1',
+                            label: '新产品鉴定'
+                        }, {
+                            value: '2',
+                            label: '产品认证'
+                        }, {
+                            value: '3',
+                            label: '型式试验'
+                        }, {
+                            value: '4',
+                            label: '可靠性试验'
+                        }, {
+                            value: '5',
+                            label: '性能试验'
+                        }
+                    ]
+                },{
+                    value: '6',
+                    label: '现代农业检测',
+                    children: [
+                        {
+                            value: '1',
+                            label: '农产品检测'
+                        }, {
+                            value: '2',
+                            label: '肥料检测'
+                        }, {
+                            value: '3',
+                            label: '饲料检测'
+                        }
+                    ]
+                },{
+                    value: '7',
+                    label: '其他检测服务',
+                }]
+            }]
+        },
+        methods:{
+            service_submit:function (){
+                this.dialogFormVisible=false
+                alert(JSON.stringify(this.form))
+                fetch('/biomedical',{
+                    method:'POST',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body:JSON.stringify(this.form)
+                }).then(response => response.json()).then(json => {
+                    alert("发布服务成功")
+                })
+            },
+            service_submit_electron_optical:function (){
+                this.dialogFormVisible1=false
+                alert(JSON.stringify(this.form1))
+                fetch('/electron-optical',{
+                    method:'POST',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body:JSON.stringify(this.form1)
+                }).then(response => response.json()).then(json => {
+                    alert("发布服务成功")
+                })
+            },
+            service_submit_emc:function (){
+                this.dialogFormVisible2=false
+                alert(JSON.stringify(this.form2))
+                fetch('/emc',{
+                    method:'POST',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body:JSON.stringify(this.form2)
+                }).then(response => response.json()).then(json => {
+                    alert("发布服务成功")
+                })
+            },
+            service_submit_pattent_transfer:function (){
+                this.dialogFormVisible3=false
+                alert(JSON.stringify(this.form3))
+                fetch('/patent-transfer',{
+                    method:'POST',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body:JSON.stringify(this.form3)
+                }).then(response => response.json()).then(json => {
+                    alert("发布服务成功")
+                })
+            },
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview(file) {
+                console.log(file);
+            },
+            handleExceed(files, fileList) {
+                this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            },
+            beforeRemove(file, fileList) {
+                return this.$confirm(`确定移除 ${ file.name }？`);
+            },
+            handleSuccess:function(response){
+                this.form3.fileurl=response.url
+            },
+            select_area:function (value){
+                alert(value)
+                if(value=='1,1,1'){
+                    this.dialogFormVisible=true
+                }
+                if(value=='3,1,1'){
+                    this.dialogFormVisible1=true
+                }
+                if(value=='4,1,1'){
+                    this.dialogFormVisible2=true
+                }
+                if(value=='2,1,1'){
+                    this.dialogFormVisible3=true
+                }
+            },
+        }
+    })
+</script>
+</html>

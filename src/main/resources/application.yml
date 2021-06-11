@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/yanfafuwu?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+    username: root
+    password: 123456
+  mvc:
+  static-path-pattern: /static/**
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+server:
+  tomcat:
+    connection-timeout: 18000000
+  port: 80
+
+my_ip: 139.196.98.34
+
+

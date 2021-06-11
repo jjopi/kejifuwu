@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="app" style="padding-bottom: 30px">
+
+    <div style="height: 30px;width: 100%;background-color: #ff6a00">
+        <div style="text-align: center;line-height: 30px">交易最终评价页</div>
+    </div>
+    <div style="height: 30px;width: 100%;">
+        <div style="float:left;width: 30%;text-align: right">交易ID:</div>
+        <div style="float:left;width: 60%;margin-left: 20px">{{result.id}}</div>
+    </div>
+    <div style="width: 100%;height: 150px">
+        <div style="float:left;width: 30%;text-align: right">服务方评价:</div>
+        <div style="float:left;width: 60%;margin-left: 20px;">{{result.sellEvaluation}}</div>
+    </div>
+    <div style="width: 100%;height: 150px">
+        <div style="float:left;width: 30%;text-align: right">需求方评价:</div>
+        <div style="float:left;height: 100%;width: 60%;margin-left: 20px;">{{result.buyEvaluation}}</div>
+    </div>
+    <div style="width: 100%;height: 150px">
+        <div style="float:left;width: 30%;text-align: right">平台最终评价:</div>
+        <div style="float:left;height: 100%;width: 60%;margin-left: 20px;">
+            <textarea v-model="comment" placeholder="请提交平台对于该交易的最终评价" minlength="2000"style="height: 200px;width: 400px"></textarea>
+        </div>
+    </div>
+    <div style="width: 100%;text-align: center;margin-top: 100px;">
+        <button @click="submit_comment">提交</button>
+    </div>
+</div>
+
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            admin: '',
+            result: {},
+            business_id: 0,
+            comment: ''
+        },
+        created:function (){
+            var id_value = window.location.href.split('=').pop();
+            this.business_id=id_value
+            alert('/business?id='+this.business_id)
+            fetch('/business?id='+this.business_id).then(res=>res.json())
+            .then(json=>{
+                this.result=json
+                console.log(this.result.id)
+                console.log(this.result.sellEvaluation)
+            })
+        },
+        methods: {
+            submit_comment:function (){
+                var formData = new FormData();
+                formData.append('id',this.business_id)
+                formData.append('comment',this.comment)
+                fetch("/comment/last",{
+                    method: 'POST',
+                    body:formData
+                }).then(res=>res.json)
+                    .then(json=>{
+                        window.location.href='dashboard_index.html'
+                    })
+            }
+        }
+    })
+</script>
+</html>

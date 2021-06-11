@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="app">
+    <div style="height: 40px;width: 100%;background-color: black">
+        <div style="width: 15%;float: left; height: 100%;text-align: center;line-height: 40px;color: white">科技服务平台</div>
+    </div>
+    <div style="width: 100%;height: 440px;">
+
+        <div style="margin: 120px auto; background-color:white;height: 350px;width: 400px;border: 1px solid black">
+            <div style="height: 45px;width: 100%;">
+                <div style="float: left;width: 30%;height: 100%;text-align: center;color: black;line-height: 45px">注册</div>
+                <div style="float: left;width: 70%;height: 100%; text-align: right;color: black;line-height: 45px;">已有账号？<a style="cursor: pointer;color: #0959ae" @click="gologin">立即登录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></div>
+            </div>
+            <div style="padding-left: 50px;margin-top: 10px">
+                <input type="text" name="username" placeholder="请输入用户名" style="height: 30px;width: 300px" v-model="form.username">
+            </div>
+            <div style="padding-left: 50px;margin-top: 15px">
+                <input type="password" name="password" placeholder="请输入密码" style="height: 30px;width: 300px" v-model="form.passwd">
+            </div>
+            <div style="padding-left: 50px;margin-top: 15px">
+                <input type="password" name="password_check" placeholder="请再次输入密码" style="height: 30px;width: 300px" v-model="passwd_repeat" @blur="check_repeat">
+            </div>
+            <div style="padding-left: 50px;margin-top: 15px">
+                <input type="radio" name="isallow" :checked="a" @click="change">我已阅读并同意《<p style="display: inline">xx网用户注册协议</p>》
+            </div>
+            <div style="padding-left: 50px;margin-top: 35px">
+                <div @click="signup" style="height: 30px;cursor: pointer; width: 300px;background-color: #0959ae;text-align: center;line-height: 30px;color: white">立即注册</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            a: false,
+            form:{
+                username: '',
+                passwd: '',
+            },
+            passwd_repeat: '',
+            can_register: 0,
+            result: {}
+        },
+        methods: {
+            change:function (){
+                if(this.a===false){
+                    this.a=true
+                }else{
+                    this.a=false
+                }
+            },
+            signup: function (){
+                if(this.form.username==''||this.form.passwd==''||this.passwd_repeat==''){
+                    alert("请填写完整信息")
+                }else{
+                    if(this.a==false){
+                        alert("请勾选同意协议")
+                    }else{
+                        if(this.can_register==0){
+                            alert("两次输入的密码不一样")
+                        }else{
+                            fetch("/register",{
+                                method: 'POST',
+                                headers:{
+                                    'Content-Type': 'application/json'
+                                },
+                                body:JSON.stringify(this.form)
+                            }).then(res=>res.json()).then(json=>{
+                                localStorage.removeItem("token")
+                                localStorage.setItem('token',this.form.username)
+                                window.location.href='index.html'
+                            })
+                        }
+                    }
+                }
+
+            },
+            gologin:function (){
+                window.location.href="login.html"
+            },
+            check_repeat:function (){
+                if(this.form.passwd!=this.passwd_repeat){
+                    this.can_register=0;
+                    alert("两次输入的密码不相同")
+                }else{
+                    this.can_register=1;
+                }
+            }
+        }
+    })
+</script>
+</html>

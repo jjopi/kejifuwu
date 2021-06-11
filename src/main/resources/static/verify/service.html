@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="app">
+    <div style="height: 40px;width: 100%;background-color: black">
+        <div style="width: 15%;float: left; height: 100%;text-align: center;line-height: 40px;color: white">科技服务平台</div>
+
+        <div style="float: right;color: white;text-align: center;line-height: 40px">
+            <div v-if="isLogin">
+                <div style="float: right;margin-right: 20px">退出登录</div>
+                <div style="float: right;margin-right: 20px">你好{{username}}</div>
+            </div>
+            <div v-else>
+                <div style="float: right;margin-right: 20px">登录</div>
+                <div style="float: right;margin-right: 20px">注册</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="width: auto; margin-top: 10px;padding: 20px">
+        <div style="height: 30px;line-height: 30px;">
+            服务详情页
+        </div>
+
+        <div style="height: 40px;line-height: 40px;font-size: 24px;margin-top: 10px">{{information.name}}</div>
+
+        <div style="height: 30px;margin-top: 20px">
+            <div style="float: left;width: 25%;line-height: 30px">服务类型:</div>
+            <div style="float: left;width: 60%;line-height: 30px">{{information.type}}</div>
+        </div>
+        <div style="height: 30px;margin-top: 20px">
+            <div style="float: left;width: 25%;line-height: 30px">服务名称:</div>
+            <div style="float: left;width: 60%;line-height: 30px">{{information.name}}</div>
+        </div>
+        <div style="height: 30px;margin-top: 20px">
+            <div style="float: left;width: 25%;line-height: 30px">服务提供方:</div>
+            <div style="float: left;width: 60%;line-height: 30px">{{information.provider}}</div>
+        </div>
+        <div style="height: 30px;margin-top: 20px">
+            <div style="float: left;width: 25%;line-height: 30px">发布时间:</div>
+            <div style="float: left;width: 60%;line-height: 30px">{{information.publishDate}}</div>
+        </div>
+        <div style="height: 30px;margin-top: 20px">
+            <div style="float: left;width: 25%;line-height: 30px">服务周期:</div>
+            <div style="float: left;width: 60%;line-height: 30px">{{information.period}}</div>
+        </div>
+        <div style="height: 30px;margin-top: 20px">
+            <div style="float: left;width: 25%;line-height: 30px">服务提交方式:</div>
+            <div style="float: left;width: 60%;line-height: 30px">{{information.deliverable}}</div>
+        </div>
+        <div style="height: 30px;margin-top: 20px">
+            <div style="float: left;width: 25%;line-height: 30px">需求方提供的需求方式</div>
+            <div style="float: left;width: 60%;line-height: 30px">{{information.modeOfDelivery}}</div>
+        </div>
+        <div style="height: 30px;margin-top: 20px">
+            <div style="float: left;width: 25%;line-height: 30px">验收和售后:</div>
+            <div style="float: left;width: 60%;line-height: 30px">{{information.acceptGuarantee}}</div>
+        </div>
+        <div style="height: 30px;margin-top: 20px">
+            <div style="float: left;width: 25%;line-height: 30px">联系人:</div>
+            <div style="float: left;width: 60%;line-height: 30px">{{information.contact}}</div>
+        </div>
+        <div style="height: 30px;margin-top: 20px">
+            <div style="float: left;width: 25%;line-height: 30px">联系方式:</div>
+            <div style="float: left;width: 60%;line-height: 30px">{{information.phone}}</div>
+        </div>
+        <div style="height: 30px;margin-top: 20px">
+            <div style="float: left;width: 25%;line-height: 30px">费用:</div>
+            <div style="float: left;width: 60%;line-height: 30px">{{information.fee}}</div>
+        </div>
+        <div style="margin-top: 20px;height: 300px;">
+            <div style="float: left;width: 25%;line-height: 30px">服务详情描述:</div>
+            <div style="float: left;width: 60%;border: 1px solid grey;line-height: 30px;height: 300px">
+                {{information.des}}
+            </div>
+        </div>
+
+        <div style="margin-top: 10px;height: 70px;display:flex;align-items:center;justify-content:center;">
+            <div style="width: 120px;height: 40px;background-color: #0959ae;text-align: center;line-height: 40px;color: white;cursor: pointer"
+                 @click="pass">通过审核
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            isLogin: false,
+            username: '',
+            type: 'demand',
+            show_service: 0,
+            result: [],
+            information: {},
+            id: 0,
+        },
+        created: function () {
+            let token_value= localStorage.getItem("token")
+            // if(token_value==null){
+            //     window.location.href='../index_old.html'
+            // }else{}
+            var arr = window.location.href.split('=')
+            var id = arr[arr.length - 1]
+            this.username=token_value
+            this.id=id
+            fetch('/service_information?id='+id).then(res=>res.json())
+                .then(json=>{
+                    this.information=json
+                })
+            this.isLogin = true
+
+        },
+        methods: {
+            pass:function (){
+                fetch('/s?id='+this.id)
+                window.location.href='../dashboard/dashboard_index.html'
+            }
+        }
+    })
+</script>
+</html>

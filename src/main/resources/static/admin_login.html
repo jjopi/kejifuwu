@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="app" style="background-image: url('imgs/blueback.jpg');background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;">
+    <div style="width: 100%;height: 70px;font-size: 40px;line-height: 70px;padding-left: 40px;background-color: white">科技服务</div>
+    <div style="width: 100%;height: 350px;">
+
+        <div style="margin: 120px auto; background-color:white;height: 250px;width: 400px;">
+            <div style="height: 45px;width: 100%;">
+                <div style="float: left;width: 30%;height: 100%;text-align: center;color: black;line-height: 45px">后台登录</div>
+            </div>
+            <div style="padding-left: 50px;margin-top: 10px">
+                <input type="text" name="username" placeholder="请输入管理员用户名" style="height: 30px;width: 300px;" v-model="username">
+            </div>
+            <div style="padding-left: 50px;margin-top: 15px">
+                <input type="password" name="password" placeholder="请输入管理员密码" style="height: 30px;width: 300px" v-model="passwd">
+            </div>
+            <div style="padding-left: 50px;margin-top: 35px">
+                <div @click="login"   style="cursor: pointer; height: 30px;width: 300px;background-color: #0959ae;text-align: center;line-height: 30px;color: white">立即登录</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            username: '',
+            passwd: '',
+        },
+        methods: {
+            login: function (){
+                fetch("/admin/login?username="+this.username+"&passwd="+this.passwd).then(res=>{return res.json()})
+                    .then(json=>{
+                        if(json.a==true){
+                            localStorage.removeItem("admin")
+                            localStorage.setItem("admin",this.username)
+                            window.location.href="dashboard/dashboard_index.html"
+                        }else{
+                            alert("登录失败")
+                        }
+                    })
+            },
+        }
+    })
+</script>
+</html>

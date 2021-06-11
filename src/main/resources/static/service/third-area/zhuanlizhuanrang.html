@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="app">
+    <div style="height: 40px;width: 100%;background-color: black">
+        <div style="width: 15%;float: left; height: 100%;text-align: center;line-height: 40px;color: white">科技服务平台</div>
+        <div style="float: right;color: white;text-align: center;line-height: 40px">
+            <div v-if="isLogin" >
+                <div style="float: right;margin-right: 20px;cursor: pointer" @click="lgout">退出登录</div>
+                <div style="float: right;margin-right: 20px;cursor: pointer" onclick="window.location.href='../../indi/member.html'">你好,{{username}}</div>
+            </div>
+            <div v-else >
+                <div style="float: right;margin-right: 20px;cursor: pointer" onclick="window.location.href='../../login.html'">登录</div>
+                <div style="float: right;margin-right: 20px;cursor: pointer" onclick="window.location.href='../../signup.html'">注册</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 10px; height: 30px;line-height: 30px;">当前位置:<span style="cursor: pointer" @click="window.location.href='../../index.html'">主页>&nbsp</span><span style="cursor: pointer" @click="window.location.href='../jishuzhuanyi.html'">技术转移>&nbsp</span><span style="cursor: pointer" @click="window.location.href='../second-area/jishujiaoyi.html'">技术交易>&nbsp</span><span>专利技术转让</span></div>
+
+    <div style="margin-top: 10px; height: 30px;line-height: 30px;font-size: 20px">服务列表:</div>
+
+    <div>
+        <div v-if="services.length==0" style="margin: 30px;background-color: #d3dce6">无该类型服务</div>
+        <div v-else v-for="item in services" style="float: left;width: 30%;height: 400px;margin-left: 30px;margin-top: 20px;box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);">
+            <div  style="cursor: pointer" @click="go_service_information(item.id)">
+                <div style="margin-left: 20px;height: 30px;margin-top: 10px">
+                    <div style="float: left;width: 25%;line-height: 30px">服务类型:</div>
+                    <div style="float: left;width: 60%;line-height: 30px"><span>{{item.ptype}}</span></div>
+                </div>
+                <div style="margin-left: 20px;height: 30px;margin-top: 10px">
+                    <div style="float: left;width: 25%;line-height: 30px">服务名称:</div>
+                    <div style="float: left;width: 60%;line-height: 30px"><span>{{item.name}}</span></div>
+                </div>
+                <div style="margin-left: 20px;height: 30px;margin-top: 10px">
+                    <div style="float: left;width: 25%;line-height: 30px">服务商:</div>
+                    <div style="float: left;width: 60%;line-height: 30px"><span>{{item.provider}}</span></div>
+                </div>
+                <div style="margin-left: 20px;height: 30px;margin-top: 10px">
+                    <div style="float: left;width: 25%;line-height: 30px">专利技术描述:</div>
+                    <div style="float: left;width: 60%;line-height: 30px"><span>{{item.des}}</span></div>
+                </div>
+                <div style="margin-left: 20px;height: 30px;margin-top: 160px">
+                    <div style="float: left;width: 25%;line-height: 30px">转让费用:</div>
+                    <div style="float: left;width: 60%;line-height: 30px"><span>{{item.fee}}</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            isLogin: false,
+            username: '',
+            services: [],
+        },
+        created:function (){
+            fetch("/patent-transfers?is_approval=1").then(res=>res.json())
+                .then(json=>{
+                    this.services=json
+                })
+            var token_value=localStorage.getItem('token')
+            if(token_value==null){
+                this.isLogin=false
+            }else{
+                this.isLogin=true
+                this.username=token_value
+            }
+        },
+        methods: {
+            lgout:function (){
+                localStorage.removeItem('token')
+                this.isLogin=false
+            },
+            go_service_information:function (id){
+                window.location.href='../../sr/information-patent-transfer.html?id='+id
+            },
+        }
+    })
+</script>
+</html>

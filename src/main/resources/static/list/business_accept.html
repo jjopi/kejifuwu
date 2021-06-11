@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="app">
+
+    <div style="width: auto;">
+        <div style="height: 40px;width: 100%;background-color: black">
+            <div style="width: 15%;float: left; height: 100%;text-align: center;line-height: 40px;color: white;cursor: pointer" onclick="window.location.href='../index_old.html'">科技服务平台</div>
+
+            <div style="float: right;color: white;text-align: center;line-height: 40px">
+                <div >
+                    <div style="float: right;margin-right: 20px">你好,{{username}}</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="width: auto;height: 800px;padding-top: 20px;padding-left: 30px;padding-right: 30px">
+            <div style="width: auto;height: 40px;font-family:微软雅黑; font-size: 25px;line-height: 40px;padding-left: 10px">
+                个人中心
+            </div>
+            <div style="width: 100%;height: 1px;background: #00a7d9;overflow: hidden;"></div>
+
+            <div style="width: auto;">
+                <div style="float: left; width: 15%;  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);margin-top: 10px">
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer"
+                         onclick="window.location.href='../indi/member_old.html'">
+                        基本资料
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer"
+                         onclick="window.location.href='../indi/publishDemand.html'">
+                        发布需求
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer"
+                         onclick="window.location.href='../indi/publishService.html'">
+                        发布服务
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer"
+                    onclick="window.location.href='demand.html'">
+                        需求列表
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer"
+                         onclick="window.location.href='service.html'">
+                        服务列表
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;color: white;background-color: orangered">
+                        待确定交易
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer"
+                         onclick="window.location.href='business_submit.html'">
+                        待提交交易
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer"
+                    onclick="window.location.href='business_done.html'">
+                        已完成交易
+                    </div>
+                </div>
+
+                <div style="float: left;width: 75%;height: 700px;box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);margin-left: 15px;margin-top: 10px">
+                    <div style="width: auto;height: 94%;margin: 20px;">
+                        <table class="table" style="box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center">交易名称</th>
+                            </tr>
+                            </thead>
+                            <tr v-for="item in result">
+                                <td style="text-align: center" @click="go_business(item.id)">{{item.name}}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            isLogin: true,
+            username: '',
+            result: []
+
+        },
+        created: function () {
+            var token_value = localStorage.getItem('token')
+            if (token_value == null) {
+                // alert("未登录，跳转")
+                // window.location.href="index_old.html"
+            } else {
+                this.username = token_value
+                fetch("/buy?username="+this.username).then(res=>res.json())
+                    .then(json=>{
+                        this.result=json
+                    })
+            }
+        },
+        methods: {
+            deleteById:function (id){
+                console.log('/demand/'+id)
+                fetch('/demand/'+id)
+                for(var i=0;i<this.result.length;i++){
+                    if(this.result[i].id==id){
+
+                        this.result.splice(i,1)
+                        break;
+                    }
+                }
+
+            },
+            go_business:function (id){
+                window.location.href='../transaction/demander.html?id='+id
+            }
+
+        }
+    })
+</script>
+</html>

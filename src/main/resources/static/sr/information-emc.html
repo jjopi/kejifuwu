@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <style>
+        .el-row {
+            margin-bottom: 20px;
+        }
+        .el-col {
+            border-radius: 4px;
+        }
+        .bg-purple-dark {
+            background: #99a9bf;
+        }
+        .bg-purple {
+            background: #d3dce6;
+        }
+        .bg-purple-light {
+            background: #e5e9f2;
+        }
+        .grid-content {
+            border-radius: 4px;
+            min-height: 45px;
+            line-height: 45px;
+            padding-left: 20px;;
+        }
+        .row-bg {
+            padding: 10px 0;
+            background-color: #f9fafc;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div style="height: 40px;width: 100%;background-color: black">
+        <div style="width: 15%;float: left; height: 100%;text-align: center;line-height: 40px;color: white;cursor: pointer" @click="window.location.href='../index.html'">科技服务平台</div>
+        <div style="float: right;color: white;text-align: center;line-height: 40px">
+            <div v-if="isLogin" >
+                <div style="float: right;margin-right: 20px;cursor: pointer" @click="lgout">退出登录</div>
+                <div style="float: right;margin-right: 20px;cursor: pointer" onclick="window.location.href='../indi/member.html'">你好,{{username}}</div>
+            </div>
+            <div v-else >
+                <div style="float: right;margin-right: 20px;cursor: pointer" onclick="">登录</div>
+                <div style="float: right;margin-right: 20px;cursor: pointer" onclick="">注册</div>
+            </div>
+        </div>
+    </div>
+
+    <el-row>
+        <el-col :span="24"><div class="grid-content bg-purple-dark" style="text-align: center;line-height: 45px;font-size: 20px">电磁兼容检测服务详情页</div></el-col>
+    </el-row>
+    <el-row>
+        <el-col :span="3"><div class="grid-content bg-purple">服务名称</div></el-col>
+        <el-col :span="15"><div class="grid-content bg-purple-light">{{service.name}}</div></el-col>
+    </el-row>
+    <el-row>
+        <el-col :span="3"><div class="grid-content bg-purple">服务类型</div></el-col>
+        <el-col :span="9"><div class="grid-content bg-purple-light">{{service.type}}</div></el-col>
+        <el-col :span="3"><div class="grid-content bg-purple">服务商</div></el-col>
+        <el-col :span="9"><div class="grid-content bg-purple-light">{{service.provider}}</div></el-col>
+
+    </el-row>
+    <el-row>
+        <el-col :span="4"><div class="grid-content bg-purple">EMI测试项目</div></el-col>
+        <el-col :span="20"><div class="grid-content bg-purple-light">{{service.emi}}</div></el-col>
+
+    </el-row>
+    <el-row>
+        <el-col :span="4"><div class="grid-content bg-purple">EMS测试项目</div></el-col>
+        <el-col :span="20"><div class="grid-content bg-purple-light">{{service.ems}}</div></el-col>
+
+    </el-row>
+
+    <el-row>
+        <el-col :span="4"><div class="grid-content bg-purple">测试领域</div></el-col>
+        <el-col :span="20"><div class="grid-content bg-purple-light">{{service.area}}</div></el-col>
+
+    </el-row>
+<!--    <el-row>-->
+<!--        <el-col :span="3"><div class="grid-content bg-purple">服务商</div></el-col>-->
+<!--        <el-col :span="9"><div class="grid-content bg-purple-light">{{service.provider}}</div></el-col>-->
+<!--        <el-col :span="3"><div class="grid-content bg-purple">适用学科</div></el-col>-->
+<!--        <el-col :span="9"><div class="grid-content bg-purple-light">{{service.subjects}}</div></el-col>-->
+<!--    </el-row>-->
+
+    <el-row>
+        <el-col :span="4"><div class="grid-content bg-purple">CNAS认证</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-light">{{service.cnas}}</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple">CMA计量认证</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-light">{{service.cma}}</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple">CAL审查认可</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-light">{{service.cal}}</div></el-col>
+    </el-row>
+
+    <el-row>
+        <el-col :span="4"><div class="grid-content bg-purple">联系人</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-light">{{service.contact}}</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple">联系方式</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-light">{{service.phone}}</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple">费用</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-light">{{service.fee}}</div></el-col>
+    </el-row>
+
+    <el-row>
+        <el-col :span="4"><div class="grid-content bg-purple">支持的检测模式</div></el-col>
+        <el-col :span="8"><div class="grid-content bg-purple-light">{{service.testPattern}}</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple">检测周期</div></el-col>
+        <el-col :span="8"><div class="grid-content bg-purple-light">{{service.period}}</div></el-col>
+    </el-row>
+
+    <el-row>
+        <el-col :span="4"><div class="grid-content bg-purple">机构地址</div></el-col>
+        <el-col :span="20"><div class="grid-content bg-purple-light">{{service.location}}</div></el-col>
+    </el-row>
+
+
+
+    <el-row style="text-align: center">
+        <el-button type="info" round @click="order">预约</el-button>
+    </el-row>
+
+    <el-dialog title="咨询" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="order_submit">确 定</el-button>
+        </div>
+    </el-dialog>
+
+
+    <div style="min-height: 200px">
+        <template>
+            <el-tabs v-model="activeName" @tab-click="handleClick" >
+                <el-tab-pane label="检测服务详述" name="third">{{service.tests}}</el-tab-pane>
+                <el-tab-pane label="设备场地介绍" name="first">{{service.instrumentLab}}</el-tab-pane>
+            </el-tabs>
+        </template>
+    </div>
+
+    <el-dialog
+            title="请登录，转向主页"
+            :visible.sync="dialogVisible"
+            width="30%">
+        <span>请登录，转向主页</span>
+        <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="closeSuccess">确 定</el-button>
+  </span>
+    </el-dialog>
+
+
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            id: 0,
+            activeName: 'first',
+            username: '',
+            formLabelWidth: '120px',
+            isLogin: false,
+            dialogFormVisible: false,
+            service:{},
+            dialogVisible:false,
+            form:{
+                trustor: '',
+                name: '',
+                contact: ''
+            }
+        },
+        methods:{
+            handleClick(tab, event) {
+                console.log(tab, event);
+            },
+            order:function (){
+                this.dialogFormVisible=true
+            },
+            order_submit:function (){
+                this.dialogFormVisible=false
+            },
+            closeSuccess:function (){
+                window.location.href='../index.html'
+            },
+            lgout:function (){
+                localStorage.removeItem('token')
+                window.location.href='../index.html'
+            }
+        },
+        created:function (){
+            var username = localStorage.getItem("token");
+            if (username == null) {
+                this.dialogVisible=true
+            }else{
+                this.username=username
+                this.isLogin=true
+                var li= window.location.href.split('=')
+                this.id=li[1]
+                fetch("/emc?id="+this.id).then(res=>res.json())
+                    .then(json=>{
+                        this.service=json
+                    })
+            }
+
+        }
+    })
+</script>
+</html>

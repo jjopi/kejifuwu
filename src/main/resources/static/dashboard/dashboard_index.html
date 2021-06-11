@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="app">
+
+    <div style="width: auto;">
+        <div style="height: 60px;width: auto;background-color: ghostwhite;">
+            <div style="float: left;height: auto;width: 17%;text-align: center;line-height: 60px;color: #6f6f6f;font-size: 30px;font-family: 微软雅黑">
+                研发设计服务
+            </div>
+
+            <div style="float: right;height: 100%;text-align: center;line-height: 60px;color: #6f6f6f;font-size: 14px;font-family: 微软雅黑">
+                <div>
+                    <div style="float: right;cursor: pointer" @click="logout">
+                        退出登录
+                    </div>
+                    <div style="float: right;margin-right: 40px;">
+                        你好,{{admin}}
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div style="width: auto;height: 800px;padding-top: 20px;padding-left: 30px;padding-right: 30px">
+            <div style="width: auto;height: 40px;font-family:微软雅黑; font-size: 25px;line-height: 40px;padding-left: 10px">
+                管理员控制台
+            </div>
+            <div style="width: 100%;height: 1px;background: #00a7d9;overflow: hidden;"></div>
+
+            <div style="width: auto;">
+                <div style="float: left; width: 15%;  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);margin-top: 10px">
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;background-color: orangered" >
+                        个人认证审核
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑 ;cursor:pointer;" onclick="window.location.href='enter_verification.html'">
+                        企业认证审核
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑 ;cursor:pointer;" onclick="window.location.href='demand_verification.html'">
+                        需求审核
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑 ;cursor:pointer;" onclick="window.location.href='service_verification.html'">
+                        服务审核
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑 ;cursor:pointer;" onclick="window.location.href='transaction.html'">
+                        待确认交易
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor:pointer;" onclick="window.location.href='done.html'">
+                        已完成
+                    </div>
+                </div>
+
+
+
+                <div style="float: left;width: 75%;height: 700px;box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);margin-left: 15px;margin-top: 10px">
+
+
+                    <div style="height: 500px;width: 600px;margin: 100px auto;">
+                        <table class="table" style="box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center">申请人姓名</th>
+                                <th style="text-align: center">申请人身份证号</th>
+                            </tr>
+                            </thead>
+                            <tr v-for="item in result" style="cursor: pointer" @click="gotoverify(item.uuid)">
+                                <td style="text-align: center">{{item.name}}</td>
+                                <td style="text-align: center">{{item.identityId}}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            admin: '',
+            result: [],
+        },
+        created: function () {
+            var token_value = localStorage.getItem('admin')
+            if (token_value == null) {
+                alert("未登录，跳转")
+                window.location.href="../admin_login.html"
+            } else {
+                this.admin=token_value
+                fetch('/verification/list').then(res=>res.json())
+                .then(json=>{
+                    this.result=json
+                })
+            }
+        },
+        methods: {
+            logout: function () {
+                localStorage.removeItem('token')
+                localStorage.removeItem("status")
+                window.location.href = '../admin_login.html'
+            },
+            gotoverify:function (uuid){
+                window.location.href='../verify/individual.html?uuid='+uuid
+            }
+        }
+    })
+</script>
+</html>

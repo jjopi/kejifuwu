@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="app">
+
+    <div style="width: auto;">
+        <div style="height: 60px;width: auto;background-color: ghostwhite;">
+            <div style="float: left;height: auto;width: 17%;text-align: center;line-height: 60px;color: #6f6f6f;font-size: 30px;font-family: 微软雅黑">
+                研发设计服务
+            </div>
+
+            <div style="float: right;height: 100%;text-align: center;line-height: 60px;color: #6f6f6f;font-size: 14px;font-family: 微软雅黑">
+                <div>
+                    <div style="float: right;cursor: pointer" @click="logout">
+                        退出登录
+                    </div>
+                    <div style="float: right;margin-right: 40px;">
+                        你好,{{username}}
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div style="width: auto;height: 800px;padding-top: 20px;padding-left: 30px;padding-right: 30px">
+            <div style="width: auto;height: 40px;font-family:微软雅黑; font-size: 25px;line-height: 40px;padding-left: 10px">
+                个人中心
+            </div>
+            <div style="width: 100%;height: 1px;background: #00a7d9;overflow: hidden;"></div>
+
+            <div style="width: auto;">
+                <div style="float: left; width: 15%;  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);margin-top: 10px">
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer" onclick="window.location.href='member.html'">
+                        基本资料
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer" onclick="window.location.href='publishDemand.html'">
+                        发布需求
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer" onclick="window.location.href='publishService.html'">
+                        发布服务
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer" onclick="window.location.href='../list/demand.html'">
+                        需求列表
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer" onclick="window.location.href='../list/service.html'">
+                        服务列表
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑;cursor: pointer" onclick="window.location.href='../list/service.html'">
+                        交易申请
+                    </div>
+                    <div style="margin: 0px 8px 0px 6px;border-top:1px dotted #C0C0C0;"></div>
+                    <div style="width: auto;height: 45px;text-align: center;line-height: 45px;font-size: 17px;font-family: 微软雅黑" >
+                        交易中心
+                    </div>
+                </div>
+
+
+
+                <div style="float: left;width: 75%;height: 700px;box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);margin-left: 15px;margin-top: 10px">
+                    <div style="height: 500px;width: 600px;margin: 100px auto;">
+                        <table class="table" style="box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center">交易列表</th>
+
+                            </tr>
+                            </thead>
+                            <tr v-for="item in result" style="cursor: pointer" @click="">
+                                <td style="text-align: center">{{item.}}</td>
+
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            isLogin: true,
+            username: '',
+            status: '个人',
+            user_information: {},
+            isverify: '0',
+            result: []
+        },
+        created: function () {
+            var token_value = localStorage.getItem('token')
+            if (token_value == null) {
+                // alert("未登录，跳转")
+                // window.location.href="index_old.html"
+            } else {
+                this.username=token_value
+
+                fetch("/user?username=" + token_value).then(res => res.json())
+                    .then(json => {
+                        this.user_information = json
+                        if(this.this.user_information.enterverify==1){
+                            this.status='企业'
+                        }
+                    })
+            }
+        },
+        methods: {
+            logout: function () {
+                localStorage.removeItem('token')
+                localStorage.removeItem("stauts")
+                window.location.href = 'index.html'
+            },
+            goinverify:function (){
+                localStorage.removeItem("stauts")
+                localStorage.setItem("status",'0')
+                window.location.href='Authentication.html'
+            },
+            goenterverify:function (){
+                localStorage.removeItem("stauts")
+                localStorage.setItem("status",'1')
+                window.location.href='Authentication.html'
+            },
+            save:function (){
+
+            }
+        }
+    })
+</script>
+</html>
